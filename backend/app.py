@@ -4,9 +4,9 @@ from flask_cors import CORS, cross_origin
 app = Flask(__name__)
 CORS(app)
 
-@app.route("/", methods=["GET"])
-def get_example():
-    response = jsonify(message="Simple server is running")
+@app.route("/<text>", methods=["GET"])
+def get_example(text):
+    response = jsonify(message="Response: " + text)
     response.headers.add("Access-Control-Allow-Origin", "*")
     return response
 
