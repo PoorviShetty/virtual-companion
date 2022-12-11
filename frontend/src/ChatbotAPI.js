@@ -1,7 +1,13 @@
+import Journal from "./components/Journal";
+
 async function getResponse(text) {
   const url = `http://localhost:5000/${text}`;
   const response = await fetch(url).then((res) => res.json());
   return response;
+}
+
+function journalStart() {
+  return <Journal />;
 }
 
 const API = {
@@ -10,6 +16,7 @@ const API = {
       setTimeout(async function () {
         let response = await getResponse(message);
         if (message === "hi") resolve("Welcome to chatbot!");
+        else if (message === "journal") resolve(journalStart());
         else resolve(response.message);
       }, 2000);
     });
