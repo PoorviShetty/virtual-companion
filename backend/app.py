@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
@@ -11,9 +11,11 @@ def get_example(text):
     return response
 
 
-@app.route("/", methods=["POST"])
+@app.route("/journal", methods=["POST"])
 @cross_origin()
 def post_example():
+    entry = request.get_json()
+    print(entry)
     return jsonify(message="POST request returned")
 
 

@@ -6,17 +6,13 @@ async function getResponse(text) {
   return response;
 }
 
-function journalStart() {
-  return <Journal />;
-}
-
 const API = {
   GetChatbotResponse: async (message) => {
     return new Promise(function (resolve, reject) {
       setTimeout(async function () {
         let response = await getResponse(message);
         if (message === "hi") resolve("Welcome to chatbot!");
-        else if (message === "journal") resolve(journalStart());
+        else if (message === "journal") resolve(<Journal />);
         else resolve(response.message);
       }, 2000);
     });

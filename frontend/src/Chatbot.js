@@ -26,6 +26,7 @@ function Chatbot() {
   }, []);
 
   const send = async (text) => {
+    localStorage.clear();
     const newMessages = messages.concat(
       <UserMessage key={messages.length + 1} text={text} />,
       <BotMessage
@@ -35,6 +36,16 @@ function Chatbot() {
     );
     setMessages(newMessages);
   };
+
+  window.addEventListener("storage", () => {
+    const newMessages = messages.concat(
+      <BotMessage
+        key={messages.length + 1}
+        fetchMessage={() => "Thank you for journalling!"}
+      />
+    );
+    setMessages(newMessages);
+  });
 
   return (
     <div className="chatbot">
