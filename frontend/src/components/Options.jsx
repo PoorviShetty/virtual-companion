@@ -4,7 +4,13 @@ import axios from 'axios'
 function Options(choices) {
     function registerChoice(option){
         window.localStorage.setItem("option", option);
-        document.getElementById(option).style.background = "#CCCCCC";
+        for (const i of choices.choices){
+            if (i == option){
+                document.getElementById(i).style.backgroundColor = "#CCCCCC";
+            }else{
+                document.getElementById(i).style.backgroundColor = "white";
+            }
+        }
 
         axios.post('http://localhost:5000/option', option, {
             headers: {
@@ -25,7 +31,7 @@ function Options(choices) {
         <div>
             {choices.choices.map((choice, idx) => (
                 <div 
-                    className="choice border my-2 p-2 rounded bg-light text-black shadow options-choice" 
+                    className="choice border my-2 p-2 rounded text-black shadow options-choice" 
                     key={idx} 
                     onClick={() => {registerChoice(choice);}}
                     id={choice}

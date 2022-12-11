@@ -25,6 +25,13 @@ def option():
     print(option)
     return jsonify(message="POST request returned")
 
+@app.route("/questionnaire", methods=["POST"])
+@cross_origin()
+def questionnaire():
+    answer = request.get_json()
+    print(answer)
+    return jsonify(message="POST request returned")
+
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -46,6 +46,11 @@ function Chatbot() {
     if (localStorage.hasOwnProperty("journal")) {
       message = "Thank you for journalling!";
     }
+
+    if (localStorage.hasOwnProperty("answered")) {
+      message = "Thank you for answering!";
+    }
+
     const newMessages = messages.concat(
       <BotMessage key={messages.length + 1} fetchMessage={() => message} />
     );
