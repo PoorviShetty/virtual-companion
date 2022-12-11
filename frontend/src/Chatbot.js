@@ -38,11 +38,16 @@ function Chatbot() {
   };
 
   window.addEventListener("storage", () => {
+    let message = "";
+    if (localStorage.hasOwnProperty("option")) {
+      message = localStorage["option"] + " chosen successfully!";
+    }
+
+    if (localStorage.hasOwnProperty("journal")) {
+      message = "Thank you for journalling!";
+    }
     const newMessages = messages.concat(
-      <BotMessage
-        key={messages.length + 1}
-        fetchMessage={() => "Thank you for journalling!"}
-      />
+      <BotMessage key={messages.length + 1} fetchMessage={() => message} />
     );
     setMessages(newMessages);
   });
