@@ -26,7 +26,6 @@ function Chatbot() {
   }, []);
 
   const send = async (text) => {
-    localStorage.clear();
     const newMessages = messages.concat(
       <UserMessage key={messages.length + 1} text={text} />,
       <BotMessage
@@ -38,23 +37,36 @@ function Chatbot() {
   };
 
   window.addEventListener("storage", () => {
-    let message = "";
-    if (localStorage.hasOwnProperty("option")) {
-      message = localStorage["option"] + " chosen successfully!";
-    }
+    if (localStorage.hasOwnProperty("action")) {
+      const newMessages = messages.concat(
+        <BotMessage
+          key={messages.length + 1}
+          fetchMessage={async () =>
+            await API.GetChatbotResponse(localStorage["action"])
+          }
+        />
+      );
+      setMessages(newMessages);
+    } else {
+      let message = "";
+      if (localStorage.hasOwnProperty("option")) {
+        message =
+          "'" + localStorage["option"] + "' option chosen successfully!";
+      }
 
-    if (localStorage.hasOwnProperty("journal")) {
-      message = "Thank you for journalling!";
-    }
+      if (localStorage.hasOwnProperty("journal")) {
+        message = "Thank you for journalling!";
+      }
 
-    if (localStorage.hasOwnProperty("answered")) {
-      message = "Thank you for answering!";
-    }
+      if (localStorage.hasOwnProperty("questionnaire")) {
+        message = "Thank you for answering!";
+      }
 
-    const newMessages = messages.concat(
-      <BotMessage key={messages.length + 1} fetchMessage={() => message} />
-    );
-    setMessages(newMessages);
+      const newMessages = messages.concat(
+        <BotMessage key={messages.length + 1} fetchMessage={() => message} />
+      );
+      setMessages(newMessages);
+    }
   });
 
   return (

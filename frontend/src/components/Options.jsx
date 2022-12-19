@@ -1,6 +1,7 @@
 import React from 'react'
 import axios from 'axios'
 
+
 function Options(choices) {
     function registerChoice(option){
         window.localStorage.setItem("option", option);
@@ -18,7 +19,10 @@ function Options(choices) {
             }
         })
         .then(function(response){
-            //console.log(response);
+            if (response.data.action){
+                window.localStorage.setItem("action", response.data.action);
+                window.dispatchEvent(new Event("storage"));
+            }
         })
         .catch(function(error){
             //console.log(error);

@@ -13,7 +13,14 @@ const API = {
     return new Promise(function (resolve, reject) {
       setTimeout(async function () {
         let response = await getResponse(message);
-        if (message === "hi") resolve("Welcome to chatbot!");
+        if (message === "hi")
+          resolve("Welcome to chatbot! Type 'hello' to get started!");
+        else if (message === "hello")
+          resolve(
+            <Options
+              choices={["Get help", "Just chat", "Write a journal entry"]}
+            />
+          );
         else if (message === "journal") resolve(<Journal />);
         else if (message === "options")
           resolve(<Options choices={["Option 1", "Option 2"]} />);

@@ -3,12 +3,15 @@ import axios from 'axios'
 
 function Questionnaire(questions) {
     const [answer, setAnswer] = useState([]);
+
+    const idRand = Math.random() * (10000-1) + 1
+
     function registerAnswer(data){
         for (const i of questions.questions[data[0]]){
             if (i == data[1]){
-                document.getElementById(data[0] + i).style.backgroundColor = "#CCCCCC";
+                document.getElementById(idRand + data[0] + i).style.backgroundColor = "#CCCCCC";
             }else{
-                document.getElementById(data[0] + i).style.backgroundColor = "white";
+                document.getElementById(idRand + data[0] + i).style.backgroundColor = "white";
             }
         }
         setAnswer(answer => [...answer, data])
@@ -18,7 +21,7 @@ function Questionnaire(questions) {
     const submitAnswer = (event) => {
         event.preventDefault();
         document.getElementById("submit-button").style.display = "none"; 
-        window.localStorage.setItem("answered", "true");
+        window.localStorage.setItem("questionnaire", "true");
         answer.reverse()
         let q = []
         let data = []
@@ -55,7 +58,7 @@ function Questionnaire(questions) {
                                     className="choice border my-2 p-2 rounded  text-black shadow options-choice" 
                                     key={choice} 
                                     onClick={() => {registerAnswer([question, choice]);}}
-                                    id={question + choice}
+                                    id={idRand + question + choice}
                                 >
                                     {choice}
                                 </div>    

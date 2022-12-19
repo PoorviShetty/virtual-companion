@@ -40,7 +40,10 @@ def journal():
 @cross_origin()
 def option():
     option = request.get_json()
-    print(option)
+    if option == 'Write a journal entry':
+        return jsonify(action="journal")
+    if option == 'Get help':
+        return jsonify(action='quiz')
     return jsonify(message="POST request returned")
 
 @app.route("/questionnaire", methods=["POST"])
