@@ -17,6 +17,7 @@ function Questionnaire(questions) {
 
     const submitAnswer = (event) => {
         event.preventDefault();
+        document.getElementById("submit-button").style.display = "none"; 
         window.localStorage.setItem("answered", "true");
         answer.reverse()
         let q = []
@@ -64,7 +65,7 @@ function Questionnaire(questions) {
                     </div>
                 ) )
             }
-            <button type="submit" className='btn btn-light'>Submit Answers!</button>
+            <button type="submit" className='btn btn-light' id="submit-button">Submit Answers!</button>
         </form>
     )
 }
