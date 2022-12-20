@@ -26,6 +26,7 @@ function Chatbot() {
   }, []);
 
   const send = async (text) => {
+    localStorage.clear();
     const newMessages = messages.concat(
       <UserMessage key={messages.length + 1} text={text} />,
       <BotMessage
@@ -37,17 +38,35 @@ function Chatbot() {
   };
 
   window.addEventListener("storage", () => {
-    if (localStorage.hasOwnProperty("action")) {
-      const newMessages = messages.concat(
-        <BotMessage
-          key={messages.length + 1}
-          fetchMessage={async () =>
-            await API.GetChatbotResponse(localStorage["action"])
-          }
-        />
-      );
-      setMessages(newMessages);
+    function removeLocal() {
+      return new Promise(function (resolve) {
+        localStorage.clear();
+      });
+    }
+
+    if (
+      localStorage.hasOwnProperty("action") &&
+      !(
+        localStorage.hasOwnProperty("questionnaire") ||
+        localStorage.hasOwnProperty("journal")
+      )
+    ) {
+      function addNew() {
+        return new Promise(function (resolve) {
+          const newMessages = messages.concat(
+            <BotMessage
+              key={messages.length + 1}
+              fetchMessage={async () =>
+                await API.GetChatbotResponse(localStorage["action"])
+              }
+            />
+          );
+          setMessages(newMessages);
+        });
+      }
+      addNew().then(removeLocal);
     } else {
+      // use promises or something idk, why is questionnaire TRUE OMG
       let message = "";
       if (localStorage.hasOwnProperty("option")) {
         message =
@@ -66,6 +85,7 @@ function Chatbot() {
         <BotMessage key={messages.length + 1} fetchMessage={() => message} />
       );
       setMessages(newMessages);
+      //localStorage.clear();
     }
   });
 
