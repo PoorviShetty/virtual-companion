@@ -20,10 +20,18 @@ class Journal(db.Model):
         self.entry = entry
 
 
+def detect_sentiment(message):
+    if message == "sad":
+        return "negative"
+    else:
+        return "neutral"
+
+
 @app.route("/<text>", methods=["GET"])
 def response(text):
-    response = jsonify(message="Response: " + text)
+    response = jsonify(message="Response: " + text, tone = detect_sentiment(text))
     response.headers.add("Access-Control-Allow-Origin", "*")
+
     return response
 
 

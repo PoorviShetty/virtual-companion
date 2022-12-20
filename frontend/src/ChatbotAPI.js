@@ -33,7 +33,22 @@ const API = {
               }}
             />
           );
-        else resolve(response.message);
+        else {
+          if (response.tone === "negative") {
+            resolve([
+              "I detect sadness, let me help you!\nAnswer this tiny quiz to let me understand better",
+              <hr />,
+              <Questionnaire
+                questions={{
+                  "Question 1": ["A", "B"],
+                  "Question 2": ["1", "2", "3"],
+                }}
+              />,
+            ]);
+          } else {
+            resolve(response.message);
+          }
+        }
       }, 2000);
     });
   },
