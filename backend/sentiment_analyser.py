@@ -90,7 +90,7 @@ def fit(x, y, labels):
         n_label_items[l] = len(data)
         log_label_priors[l] = math.log(n_label_items[l] / n)
     return n_label_items, log_label_priors
-    
+
 def predict(n_label_items, vocab, word_counts, log_label_priors, labels, x):
     result = []
     for text in x:
@@ -108,5 +108,8 @@ def predict(n_label_items, vocab, word_counts, log_label_priors, labels, x):
 labels = [0,1]
 n_label_items, log_label_priors = fit(train_sentences,train_labels,labels)
 
+def get_values_for_pred():
+    return [n_label_items, vocab, word_counts, log_label_priors, labels]
+    
 pred = predict(n_label_items, vocab, word_counts, log_label_priors, labels, test_sentences)
 print("Accuracy of prediction on test set : ", accuracy_score(test_labels,pred))

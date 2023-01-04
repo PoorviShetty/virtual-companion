@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS, cross_origin
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+from sentiment_analyser import predict, get_values_for_pred
 
 app = Flask(__name__)
 CORS(app)
@@ -9,6 +10,9 @@ CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 app.config['SECRET_KEY'] = "random string"
 db = SQLAlchemy(app)
+
+pos = 5
+neg = 0
 
 class Journal(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -29,7 +33,23 @@ def detect_sentiment(message):
 
 @app.route("/<text>", methods=["GET"])
 def response(text):
-    response = jsonify(message="Response: " + text, tone = detect_sentiment(text))
+    global pos
+    global neg
+
+    values = get_values_for_pred()
+    pred = predict(values[0], values[1], values[2], values[3], values[4], [text])
+
+    if pred[0] == 1:
+        pos += 1
+    else:
+        neg += 1
+
+    if pos < neg:
+        response = jsonify(message="Response: " + text, tone = detect_sentiment("sad"))
+        pos = 0
+        neg = 0
+    else:
+        response = jsonify(message="Response: " + text, tone = detect_sentiment("neutral"))
     response.headers.add("Access-Control-Allow-Origin", "*")
 
     return response
