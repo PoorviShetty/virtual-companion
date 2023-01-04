@@ -16,7 +16,7 @@ nltk.download('wordnet')
 from nltk.corpus import stopwords
 stop_words = list(stopwords.words('english'))
 
-data = pd.read_csv('IMDB Dataset.csv')
+data = pd.read_csv('./data/IMDB Dataset.csv')
 
 def clean_string(text):
     final_string = ""
