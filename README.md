@@ -14,6 +14,10 @@ npm start
 
 ## Backend Setup
 
+Download dataset [here](https://www.kaggle.com/datasets/lakshmi25npathi/imdb-dataset-of-50k-movie-reviews) to `backend/data`
+
+Create `app.db` in `backend/instance`
+
 Enter in terminal
 
 ```
