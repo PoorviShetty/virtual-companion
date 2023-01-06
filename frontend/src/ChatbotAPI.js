@@ -46,7 +46,16 @@ const API = {
               />,
             ]);
           } else {
-            resolve(response.message);
+            var res = [];
+
+            response.message.forEach(function (entry) {
+              res.push(entry);
+              res.push(<hr />);
+            });
+
+            res.pop();
+
+            resolve(res);
           }
         }
       }, 2000);

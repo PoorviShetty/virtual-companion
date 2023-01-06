@@ -39,6 +39,7 @@ def response(text):
 
     values = get_values_for_pred()
     pred = predict(values[0], values[1], values[2], values[3], values[4], [text])
+    # pred = [1]
 
     if pred[0] == 1:
         pos += 1
@@ -46,11 +47,11 @@ def response(text):
         neg += 1
 
     if pos < neg:
-        response = jsonify(message="Response: " + translate(text), tone = detect_sentiment("sad"))
+        response = jsonify(message=["Response: " + translate(text)], tone = detect_sentiment("sad"))
         pos = 0
         neg = 0
     else:
-        response = jsonify(message="Response: " + translate(text), tone = detect_sentiment("neutral"))
+        response = jsonify(message=["Response: " + translate(text)], tone = detect_sentiment("neutral"))
     response.headers.add("Access-Control-Allow-Origin", "*")
 
     return response
