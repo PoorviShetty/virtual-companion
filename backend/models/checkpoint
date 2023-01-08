@@ -1,0 +1,2 @@
+model_checkpoint_path: "/mnt/d/Documents/virtual-companion/backend/models/model.tflearn"
+all_model_checkpoint_paths: "/mnt/d/Documents/virtual-companion/backend/models/model.tflearn"

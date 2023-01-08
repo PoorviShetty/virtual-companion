@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from sentiment_analyser import predict, get_values_for_pred
 from eng_to_kan import translate
+from get_chat_response import response as rp
 
 app = Flask(__name__)
 CORS(app)
@@ -45,13 +46,15 @@ def response(text):
         pos += 1
     else:
         neg += 1
+    
+    bot_resp = rp(text) if rp(text) != None else ""
 
     if pos < neg:
-        response = jsonify(message=["Response: " + translate(text)], tone = detect_sentiment("sad"))
+        response = jsonify(message=[bot_resp], tone = detect_sentiment("sad"))
         pos = 0
         neg = 0
     else:
-        response = jsonify(message=["Response: " + translate(text)], tone = detect_sentiment("neutral"))
+        response = jsonify(message=[bot_resp], tone = detect_sentiment("neutral"))
     response.headers.add("Access-Control-Allow-Origin", "*")
 
     return response
