@@ -14,7 +14,9 @@ npm start
 
 ## Backend Setup
 
-Download dataset [here](https://www.kaggle.com/datasets/lakshmi25npathi/imdb-dataset-of-50k-movie-reviews) to `backend/data`
+Download dataset for setiment analysis [here](https://www.kaggle.com/datasets/lakshmi25npathi/imdb-dataset-of-50k-movie-reviews)
+Download dataset for translation (Eng to Kan) [here](https://ai4bharat.iitm.ac.in/samanantar)
+Place datasets in `backend/data` folder
 
 Create `app.db` in `backend/instance`
 
