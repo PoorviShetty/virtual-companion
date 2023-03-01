@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 # from eng_to_kan import translate
 # from get_chat_response import response as rp
+from text_summariser import summarise_text
 import dill
 import re
 import math
@@ -59,7 +60,7 @@ def response(text):
 
     if pos < neg:
         response = jsonify(message=[bot_resp], tone = detect_sentiment("sad"))
-        pos = 0
+        pos = 5
         neg = 0
     else:
         response = jsonify(message=[bot_resp], tone = detect_sentiment("neutral"))
@@ -99,6 +100,12 @@ def questionnaire():
     print(convo)
     print(answer)
     return jsonify(message="POST request returned")
+
+@app.route("/summarise", methods=["GET"])
+@cross_origin()
+def summarise():
+    text = ' '.join(convo)
+    return jsonify(message=["Sure, here is your auto-generated journal entry!", summarise_text(text)])
 
 
 if __name__ == "__main__":

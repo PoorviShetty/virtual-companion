@@ -8,11 +8,23 @@ async function getResponse(text) {
   return response;
 }
 
+async function getSummary() {
+  const url = `http://localhost:5000/summarise`;
+  const response = await fetch(url).then((res) => res.json());
+  return response;
+}
+
 const API = {
   GetChatbotResponse: async (message) => {
     return new Promise(function (resolve, reject) {
       setTimeout(async function () {
-        let response = await getResponse(message);
+        let response = "";
+        if (message === "summary") {
+          response = await getSummary();
+        } else {
+          response = await getResponse(message);
+        }
+
         if (message === "hi")
           resolve("Welcome to chatbot! Type 'hello' to get started!");
         else if (message === "hello")

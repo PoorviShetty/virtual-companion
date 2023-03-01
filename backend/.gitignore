@@ -4,3 +4,4 @@ __pycache__
 .ipynb_checkpoints
 data/*
 training_data
+hf_token.txt
