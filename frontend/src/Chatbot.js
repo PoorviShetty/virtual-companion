@@ -78,7 +78,7 @@ function Chatbot() {
       }
 
       if (localStorage.hasOwnProperty("questionnaire")) {
-        message = "Thank you for answering!";
+        message = localStorage["questionnaire"];
       }
 
       const newMessages = messages.concat(

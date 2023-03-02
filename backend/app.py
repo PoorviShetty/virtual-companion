@@ -73,8 +73,6 @@ def response(text):
 @cross_origin()
 def journal():
     entry = request.get_json()
-    convo.append(entry)
-    print(convo)
     date = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
     db.session.add(Journal(entry=entry, date=date))
     db.session.commit()
@@ -84,8 +82,6 @@ def journal():
 @cross_origin()
 def option():
     option = request.get_json()
-    convo.append(option)
-    print(convo)
     if option == 'Write a journal entry':
         return jsonify(action="journal")
     if option == 'Get help':
@@ -96,10 +92,8 @@ def option():
 @cross_origin()
 def questionnaire():
     answer = request.get_json()
-    convo.append(answer)
-    print(convo)
     print(answer)
-    return jsonify(message="POST request returned")
+    return jsonify(message = str(answer))
 
 @app.route("/summarise", methods=["GET"])
 @cross_origin()

@@ -8,7 +8,7 @@ function Questionnaire(questions) {
 
     function registerAnswer(data){
         for (const i of questions.questions[data[0]]){
-            if (i == data[1]){
+            if (i === data[1]){
                 document.getElementById(idRand + data[0] + i).style.backgroundColor = "#CCCCCC";
             }else{
                 document.getElementById(idRand + data[0] + i).style.backgroundColor = "white";
@@ -21,7 +21,7 @@ function Questionnaire(questions) {
     const submitAnswer = (event) => {
         event.preventDefault();
         document.getElementById("submit-button").style.display = "none"; 
-        window.localStorage.setItem("questionnaire", "true");
+        
         answer.reverse()
         let q = []
         let data = []
@@ -37,7 +37,8 @@ function Questionnaire(questions) {
             }
         })
         .then(function(response){
-            //console.log(response);
+            window.localStorage.setItem("questionnaire", response.data.message);
+            console.log( localStorage["questionnaire"])
         })
         .catch(function(error){
             //console.log(error);
