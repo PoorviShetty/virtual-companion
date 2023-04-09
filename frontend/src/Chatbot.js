@@ -67,24 +67,28 @@ function Chatbot() {
       addNew().then(removeLocal);
     } else {
       // use promises or something idk, why is questionnaire TRUE OMG
-      let message = "";
-      if (localStorage.hasOwnProperty("option")) {
-        message =
-          "'" + localStorage["option"] + "' option chosen successfully!";
-      }
+      let message = "Something went wrong";
+      setTimeout(function () {
+        if (localStorage.hasOwnProperty("option")) {
+          message =
+            "'" + localStorage["option"] + "' option chosen successfully!";
+        }
 
-      if (localStorage.hasOwnProperty("journal")) {
-        message = "Thank you for journalling!";
-      }
+        if (localStorage.hasOwnProperty("journal")) {
+          message = "Thank you for journalling!";
+        }
 
-      if (localStorage.hasOwnProperty("questionnaire")) {
-        message = localStorage["questionnaire"];
-      }
+        if (localStorage.hasOwnProperty("questionnaire")) {
+          message = localStorage["questionnaire"];
+          console.log("HERE");
+          console.log(localStorage["questionnaire"]);
+        }
 
-      const newMessages = messages.concat(
-        <BotMessage key={messages.length + 1} fetchMessage={() => message} />
-      );
-      setMessages(newMessages);
+        const newMessages = messages.concat(
+          <BotMessage key={messages.length + 1} fetchMessage={() => message} />
+        );
+        setMessages(newMessages);
+      }, 2000);
       //localStorage.clear();
     }
   });

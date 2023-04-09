@@ -38,7 +38,6 @@ function Questionnaire(questions) {
         })
         .then(function(response){
             window.localStorage.setItem("questionnaire", response.data.message);
-            console.log( localStorage["questionnaire"])
         })
         .catch(function(error){
             //console.log(error);
