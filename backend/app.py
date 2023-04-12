@@ -92,8 +92,20 @@ def option():
 @cross_origin()
 def questionnaire():
     answer = request.get_json()
-    print(answer)
-    return jsonify(message = str(answer))
+    options_to_points = {'Never' : 1, 'Sometimes' : 2, 'More than half the days' : 3, 'All the time' : 4}
+    points = 0
+    for responses in answer:
+        print(options_to_points[responses[1]])
+        points += options_to_points[responses[1]]
+
+    if points < 13:
+        msg = "You are facing significant levels of distress!"
+    elif points >= 13 and points < 26:
+        msg = "You are facing moderate levels of distress!"
+    else:
+        msg = "You have a strong sense of well-being!"
+
+    return jsonify(message = msg)
 
 @app.route("/summarise", methods=["GET"])
 @cross_origin()

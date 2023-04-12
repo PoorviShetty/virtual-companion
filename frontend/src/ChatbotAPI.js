@@ -40,8 +40,68 @@ const API = {
           resolve(
             <Questionnaire
               questions={{
-                "Question 1": ["A", "B"],
-                "Question 2": ["1", "2", "3"],
+                "Given my current physical condition, I am satisfied with what I can do.":
+                  [
+                    "Never",
+                    "Sometimes",
+                    "More than half the days",
+                    "All the time",
+                  ],
+                "I have confidence in my ability to sustain important relationships.":
+                  [
+                    "Never",
+                    "Sometimes",
+                    "More than half the days",
+                    "All the time",
+                  ],
+                "I feel hopeful about my future.": [
+                  "Never",
+                  "Sometimes",
+                  "More than half the days",
+                  "All the time",
+                ],
+                "I am often interested and excited about things in my life.": [
+                  "Never",
+                  "Sometimes",
+                  "More than half the days",
+                  "All the time",
+                ],
+                "I am able to have fun.": [
+                  "Never",
+                  "Sometimes",
+                  "More than half the days",
+                  "All the time",
+                ],
+                "I am generally satisfied with my psychological health.": [
+                  "Never",
+                  "Sometimes",
+                  "More than half the days",
+                  "All the time",
+                ],
+                "I am able to forgive myself for my failures.": [
+                  "Never",
+                  "Sometimes",
+                  "More than half the days",
+                  "All the time",
+                ],
+                "My life is progressing according to my expectations.": [
+                  "Never",
+                  "Sometimes",
+                  "More than half the days",
+                  "All the time",
+                ],
+                "I am able to handle conflict with others.": [
+                  "Never",
+                  "Sometimes",
+                  "More than half the days",
+                  "All the time",
+                ],
+                "I have peace of mind.": [
+                  "Never",
+                  "Sometimes",
+                  "More than half the days",
+                  "All the time",
+                ],
               }}
             />
           );
@@ -52,16 +112,6 @@ const API = {
               <hr />,
               <Questionnaire
                 questions={{
-                  "What is your age?": [
-                    "18-24",
-                    "25-34",
-                    "35-44",
-                    "45-54",
-                    "55-64",
-                    "65-74",
-                    "75-84",
-                    "85+",
-                  ],
                   "Given my current physical condition, I am satisfied with what I can do.":
                     [
                       "Never",
