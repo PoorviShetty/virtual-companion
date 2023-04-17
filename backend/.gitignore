@@ -6,3 +6,4 @@ data/*
 training_data
 hf_token.txt
 apex
+en-indic

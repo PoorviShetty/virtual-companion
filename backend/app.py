@@ -55,8 +55,9 @@ def response(text):
     else:
         neg += 1
 
-    #bot_resp = translate(text) if translate(text) != None else ""
-    bot_resp = text 
+    # print(translate("I am good"))
+    bot_resp = translate(text) if translate(text) != None else ""
+    # bot_resp = text 
     if pos < neg:
         response = jsonify(message=[bot_resp], tone = detect_sentiment("sad"))
         pos = 5
