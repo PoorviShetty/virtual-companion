@@ -1,3 +1,6 @@
 .App {
   text-align: center;
 }
+select {
+  -webkit-appearance: listbox !important;
+}

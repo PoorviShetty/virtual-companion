@@ -2,7 +2,7 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS, cross_origin
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-# from eng_to_kan import translate
+from eng_to_kan import translate
 # from get_chat_response import response as rp
 from text_summariser import summarise_text
 import dill
@@ -24,10 +24,12 @@ class Journal(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.String(20), unique=False, nullable=False)
     entry = db.Column(db.Text, nullable=False)
+    mood = db.Column(db.Text, nullable=False)
 
-    def __init__(self, date, entry):
+    def __init__(self, date, entry, mood):
         self.date = date
         self.entry = entry
+        self.mood = mood
 
 
 def detect_sentiment(message):
@@ -53,11 +55,8 @@ def response(text):
     else:
         neg += 1
 
-    def rp(x):
-        return x
-    
-    bot_resp = rp(text) if rp(text) != None else ""
-
+    #bot_resp = translate(text) if translate(text) != None else ""
+    bot_resp = text 
     if pos < neg:
         response = jsonify(message=[bot_resp], tone = detect_sentiment("sad"))
         pos = 5
@@ -72,9 +71,10 @@ def response(text):
 @app.route("/journal", methods=["POST"])
 @cross_origin()
 def journal():
-    entry = request.get_json()
+    entry = request.get_json()['entry']
+    mood = request.get_json()['mood']
     date = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
-    db.session.add(Journal(entry=entry, date=date))
+    db.session.add(Journal(entry=entry, mood=mood, date=date))
     db.session.commit()
     return jsonify(message="POST request returned")
 
@@ -99,9 +99,9 @@ def questionnaire():
         points += options_to_points[responses[1]]
 
     if points < 13:
-        msg = "You are facing significant levels of distress!"
+        msg = "You are facing significant levels of distress!\n\nPlease head over to https://www.nhs.uk/nhs-services/mental-health-services/get-urgent-help-for-mental-health/ for help!"
     elif points >= 13 and points < 26:
-        msg = "You are facing moderate levels of distress!"
+        msg = "You are facing moderate levels of distress! \n\nWe recommend follwing this resource https://www.nhs.uk/mental-health/self-help/guides-tools-and-activities/"
     else:
         msg = "You have a strong sense of well-being!"
 
