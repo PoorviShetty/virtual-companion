@@ -2,7 +2,7 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS, cross_origin
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-from eng_to_kan import translate
+# from eng_to_kan import translate
 # from get_chat_response import response as rp
 from text_summariser import summarise_text
 import dill
@@ -56,8 +56,8 @@ def response(text):
         neg += 1
 
     # print(translate("I am good"))
-    bot_resp = translate(text) if translate(text) != None else ""
-    # bot_resp = text 
+    # bot_resp = translate(text) if translate(text) != None else ""
+    bot_resp = text 
     if pos < neg:
         response = jsonify(message=[bot_resp], tone = detect_sentiment("sad"))
         pos = 5

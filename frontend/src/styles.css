@@ -1,5 +1,6 @@
 .App{
   min-height: 100vh;
+  background: #D1FFFF;
 }
 
 .chatbot {
@@ -20,7 +21,7 @@
   max-height: 58px;
   font-size: 16px;
   font-weight: bold;
-  background-color: #002f50;
+  background-color: #303C6C;
 }
 
 .messages {
@@ -41,8 +42,7 @@
   padding: 15px 20px;
   margin: 5px;
   border-radius: 20px 20px 20px 1px;
-  background: #00aaa5;
-  color: white;
+  background:#FFEA6C;
   min-width: 40px;
 }
 
@@ -51,7 +51,7 @@
   padding: 15px 10px;
   margin: 10px;
   border-radius: 20px 20px 1px 20px;
-  background: #cccccc;
+  background: #F49366;
   color: black;
 }
 
