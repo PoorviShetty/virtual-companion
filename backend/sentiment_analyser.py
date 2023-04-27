@@ -1,6 +1,4 @@
 import dill
-import re
-import math
 
 [RegexpTokenizer, WhitespaceTokenizer, laplace_smoothing] = dill.load(open('./models/sent_helpers.pkl', 'rb'))
 
