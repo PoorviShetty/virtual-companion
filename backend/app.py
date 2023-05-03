@@ -3,7 +3,7 @@ from flask_cors import CORS, cross_origin
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 # from eng_to_kan import translate
-# from get_chat_response import response as rp
+from dialogpt_chat import get_chat_response
 from text_summariser import summarise_text
 import dill
 import re
@@ -18,7 +18,16 @@ db = SQLAlchemy(app)
 
 pos = 5
 neg = 0
-convo = []
+past_user_inputs = []
+generated_responses = []
+
+import json
+import requests
+
+API_URL = "https://api-inference.huggingface.co/models/microsoft/DialoGPT-large"
+API_TOKEN = open("./notebooks/hf_token.txt","r").read()
+headers = {"Authorization": f"Bearer {API_TOKEN}"}
+
 
 class Journal(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -43,10 +52,8 @@ def detect_sentiment(message):
 def response(text):
     global pos
     global neg
-    convo.append(text)
-    print(convo)
-    # values = get_values_for_pred()
-    # pred = predict(values[0], values[1], values[2], values[3], values[4], [text])
+    past_user_inputs.append(text)
+
     pred = loaded_model(sent_params[0], sent_params[1], sent_params[2], sent_params[3], sent_params[4], [text])
     print(pred, pos, neg)
 
@@ -57,7 +64,10 @@ def response(text):
 
     # print(translate("I am good"))
     # bot_resp = translate(text) if translate(text) != None else ""
-    bot_resp = text 
+
+    bot_resp = get_chat_response(past_user_inputs, generated_responses, text)
+    generated_responses.append(bot_resp)
+
     if pos < neg:
         response = jsonify(message=[bot_resp], tone = detect_sentiment("sad"))
         pos = 5
@@ -66,6 +76,8 @@ def response(text):
         response = jsonify(message=[bot_resp], tone = detect_sentiment("neutral"))
     response.headers.add("Access-Control-Allow-Origin", "*")
 
+    print(past_user_inputs)
+    print(generated_responses)
     return response
 
 
@@ -111,7 +123,7 @@ def questionnaire():
 @app.route("/summarise", methods=["GET"])
 @cross_origin()
 def summarise():
-    text = ' '.join(convo)
+    text = ' '.join(past_user_inputs)
     return jsonify(message=["Sure, here is your auto-generated journal entry!", summarise_text(text)])
 
 
