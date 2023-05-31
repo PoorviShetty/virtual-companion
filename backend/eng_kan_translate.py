@@ -17,11 +17,19 @@ import requests
 # print(translate("I am good"))
 
 
-def translate(text):
+def translate_to_kan(text):
     response = requests.get(
         "https://api.mymemory.translated.net/get?q=" + text + "&langpair=en|kan"
     )
 
     return (response.json()['responseData']['translatedText'])
 
-# print(translate("Hello"))
+def translate_to_en(text):
+    response = requests.get(
+        "https://api.mymemory.translated.net/get?q=" + text + "&langpair=kan|en"
+    )
+
+    return (response.json()['responseData']['translatedText'])
+
+
+#print(translate_to_en("ನಮಸ್ಕಾರ"))

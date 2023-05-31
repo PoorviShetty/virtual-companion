@@ -2,13 +2,15 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS, cross_origin
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-# from eng_to_kan import translate
+from eng_kan_translate import translate_to_en, translate_to_kan
 from dialogpt_chat import get_chat_response
 from text_summariser import summarise_text
 import dill
 import re
+import json
+import requests
 import math
-
+from datetime import datetime
 app = Flask(__name__)
 CORS(app)
 
@@ -16,13 +18,11 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 app.config['SECRET_KEY'] = "random string"
 db = SQLAlchemy(app)
 
-pos = 5
+pos = 10
 neg = 0
 past_user_inputs = []
 generated_responses = []
 
-import json
-import requests
 
 API_URL = "https://api-inference.huggingface.co/models/microsoft/DialoGPT-large"
 API_TOKEN = open("./notebooks/hf_token.txt","r").read()
@@ -63,17 +63,20 @@ def response(text):
         neg += 1
 
     # print(translate("I am good"))
-    # bot_resp = translate(text) if translate(text) != None else ""
-
-    bot_resp = get_chat_response(past_user_inputs, generated_responses, text)
+    #en_text = translate_to_en(text) if translate_to_en(text) != None else ""
+    en_text = text
+    bot_resp = get_chat_response(past_user_inputs, generated_responses, en_text)
     generated_responses.append(bot_resp)
 
     if pos < neg:
+        #response = jsonify(message=[translate_to_kan(bot_resp)], tone = detect_sentiment("sad"))
         response = jsonify(message=[bot_resp], tone = detect_sentiment("sad"))
         pos = 5
         neg = 0
     else:
+        #response = jsonify(message=[translate_to_kan(bot_resp)], tone = detect_sentiment("neutral"))
         response = jsonify(message=[bot_resp], tone = detect_sentiment("neutral"))
+
     response.headers.add("Access-Control-Allow-Origin", "*")
 
     print(past_user_inputs)
@@ -125,6 +128,33 @@ def questionnaire():
 def summarise():
     text = ' '.join(past_user_inputs)
     return jsonify(message=["Sure, here is your auto-generated journal entry!", summarise_text(text)])
+
+
+@app.route("/dashboard", methods=["GET"])
+@cross_origin()
+def dashboard():
+    data = Journal.query.all()
+    data_list = {}
+    for item in data:
+        date_obj = datetime.strptime(item.date, "%Y-%m-%d %H:%M:%S")
+        month_name = date_obj.strftime("%B")
+
+        if month_name in data_list:
+            data_list[month_name].append({
+            'date': item.date.split()[0],
+            'mood': item.mood,
+            # Include other columns as required
+        })
+        else:
+            data_list[month_name] = [{
+            'date': item.date.split()[0],
+            'mood': item.mood,
+            # Include other columns as required
+        }]
+
+
+    
+    return jsonify(message=data_list)
 
 
 if __name__ == "__main__":
