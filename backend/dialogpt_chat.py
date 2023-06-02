@@ -19,16 +19,21 @@ API_URL = "https://api-inference.huggingface.co/models/microsoft/DialoGPT-large"
 API_TOKEN = open("./notebooks/hf_token.txt","r").read()
 headers = {"Authorization": f"Bearer {API_TOKEN}"}
 
+
 def get_chat_response(past_user_inputs, generated_responses, text):
+    def remove_even_indexed_elements(lst):
+        return lst[1::2]
+
     def query(payload):
         data = json.dumps(payload)
         response = requests.request("POST", API_URL, headers=headers, data=data)
         return json.loads(response.content.decode("utf-8"))
+    
     data = query(
         {
             "inputs": {
-                "past_user_inputs": past_user_inputs,
-                "generated_responses": generated_responses,
+                "past_user_inputs": remove_even_indexed_elements(past_user_inputs),
+                "generated_responses": remove_even_indexed_elements(generated_responses),
                 "text": text,
             },
         }
