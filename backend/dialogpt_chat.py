@@ -15,7 +15,8 @@
 import json
 import requests
 
-API_URL = "https://api-inference.huggingface.co/models/microsoft/DialoGPT-large"
+#API_URL = "https://api-inference.huggingface.co/models/microsoft/DialoGPT-large"
+API_URL = "https://api-inference.huggingface.co/models/facebook/blenderbot-400M-distill"
 API_TOKEN = open("./notebooks/hf_token.txt","r").read()
 headers = {"Authorization": f"Bearer {API_TOKEN}"}
 
@@ -23,7 +24,7 @@ headers = {"Authorization": f"Bearer {API_TOKEN}"}
 def get_chat_response(past_user_inputs, generated_responses, text):
     def remove_even_indexed_elements(lst):
         return lst[1::2]
-
+    
     def query(payload):
         data = json.dumps(payload)
         response = requests.request("POST", API_URL, headers=headers, data=data)
