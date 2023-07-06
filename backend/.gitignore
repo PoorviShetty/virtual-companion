@@ -7,3 +7,6 @@ training_data
 hf_token.txt
 apex
 en-indic
+ai_token.txt
+hf_cache
+*.zip

@@ -2,7 +2,7 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS, cross_origin
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-from eng_kan_translate import translate_to_en, translate_to_kan
+from eng_kan_translate import translate_to_kan
 from dialogpt_chat import get_chat_response
 from text_summariser import summarise_text
 import dill
@@ -18,7 +18,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 app.config['SECRET_KEY'] = "random string"
 db = SQLAlchemy(app)
 
-pos = 10
+pos = 5
 neg = 0
 past_user_inputs = []
 generated_responses = []
@@ -69,13 +69,13 @@ def response(text):
     generated_responses.append(bot_resp)
 
     if pos < neg:
-        #response = jsonify(message=[translate_to_kan(bot_resp)], tone = detect_sentiment("sad"))
-        response = jsonify(message=[bot_resp], tone = detect_sentiment("sad"))
+        response = jsonify(message=[translate_to_kan(bot_resp)], tone = detect_sentiment("sad"))
+        #response = jsonify(message=[bot_resp], tone = detect_sentiment("sad"))
         pos = 5
         neg = 0
     else:
-        #response = jsonify(message=[translate_to_kan(bot_resp)], tone = detect_sentiment("neutral"))
-        response = jsonify(message=[bot_resp], tone = detect_sentiment("neutral"))
+        response = jsonify(message=[translate_to_kan(bot_resp)], tone = detect_sentiment("neutral"))
+        #response = jsonify(message=[bot_resp], tone = detect_sentiment("neutral"))
 
     response.headers.add("Access-Control-Allow-Origin", "*")
 
