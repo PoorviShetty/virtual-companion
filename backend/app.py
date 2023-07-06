@@ -2,7 +2,7 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS, cross_origin
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-from eng_kan_translate import translate_to_kan
+#from eng_kan_translate import translate_to_kan
 from dialogpt_chat import get_chat_response
 from text_summariser import summarise_text
 import dill
@@ -54,6 +54,7 @@ def response(text):
     global neg
     past_user_inputs.append(text)
 
+    #SENTIMENT ANALYSIS
     pred = loaded_model(sent_params[0], sent_params[1], sent_params[2], sent_params[3], sent_params[4], [text])
     print(pred, pos, neg)
 
@@ -65,17 +66,20 @@ def response(text):
     # print(translate("I am good"))
     #en_text = translate_to_en(text) if translate_to_en(text) != None else ""
     en_text = text
+
+    # BLENDERBOT
     bot_resp = get_chat_response(past_user_inputs, generated_responses, en_text)
+    #bot_resp = text + "yes"
     generated_responses.append(bot_resp)
 
     if pos < neg:
-        response = jsonify(message=[translate_to_kan(bot_resp)], tone = detect_sentiment("sad"))
-        #response = jsonify(message=[bot_resp], tone = detect_sentiment("sad"))
+        #response = jsonify(message=[translate_to_kan(bot_resp)], tone = detect_sentiment("sad"))
+        response = jsonify(message=[bot_resp], tone = detect_sentiment("sad"))
         pos = 5
         neg = 0
     else:
-        response = jsonify(message=[translate_to_kan(bot_resp)], tone = detect_sentiment("neutral"))
-        #response = jsonify(message=[bot_resp], tone = detect_sentiment("neutral"))
+        #response = jsonify(message=[translate_to_kan(bot_resp)], tone = detect_sentiment("neutral"))
+        response = jsonify(message=[bot_resp], tone = detect_sentiment("neutral"))
 
     response.headers.add("Access-Control-Allow-Origin", "*")
 

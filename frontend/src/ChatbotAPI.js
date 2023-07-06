@@ -21,11 +21,7 @@ const API = {
         let response = "";
         if (message === "summary") {
           response = await getSummary();
-        } else {
-          response = await getResponse(message);
-        }
-
-        if (message === "hi")
+        } else if (message === "hi")
           resolve("Welcome to chatbot! Type 'hello' to get started!");
         else if (message === "hello")
           resolve(
@@ -106,6 +102,7 @@ const API = {
             />
           );
         else {
+          response = await getResponse(message);
           if (response.tone === "negative") {
             resolve([
               "I detect sadness, let me help you!\nAnswer this tiny quiz to let me understand better",

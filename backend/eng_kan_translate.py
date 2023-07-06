@@ -77,27 +77,32 @@
 
 
 # LOCAL VERSION
-from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
-cache_dir = "notebooks/hf_cache"
-tokenizer2 = AutoTokenizer.from_pretrained("facebook/nllb-200-distilled-600M", cache_dir=cache_dir)
-model2 = AutoModelForSeq2SeqLM.from_pretrained("facebook/nllb-200-distilled-600M", cache_dir=cache_dir)
+# from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
+# cache_dir = "notebooks/hf_cache"
+# tokenizer2 = AutoTokenizer.from_pretrained("facebook/nllb-200-distilled-600M", cache_dir=cache_dir)
+# model2 = AutoModelForSeq2SeqLM.from_pretrained("facebook/nllb-200-distilled-600M", cache_dir=cache_dir)
 
-text_to_translate = " I'm doing well, how are you doing today? I just got back from the gym."
+# text_to_translate = " I'm doing well, how are you doing today? I just got back from the gym."
 
-def translate_to_kan(text_to_translate):
-    # Tokenize input text
-    model_inputs = tokenizer2(text_to_translate, return_tensors="pt")
+# def translate_to_kan(text_to_translate):
+#     # Tokenize input text
+#     model_inputs = tokenizer2(text_to_translate, return_tensors="pt")
 
-    # Generate translations
-    translated_output = model2.generate(
-        **model_inputs,
-        forced_bos_token_id=tokenizer2.lang_code_to_id['kan_Knda']
-    )
+#     # Generate translations
+#     translated_output = model2.generate(
+#         **model_inputs,
+#         forced_bos_token_id=tokenizer2.lang_code_to_id['kan_Knda']
+#     )
 
-    # Decode generated translations into human-readable text
-    decoded_output = tokenizer2.batch_decode(translated_output, skip_special_tokens=True)
+#     # Decode generated translations into human-readable text
+#     decoded_output = tokenizer2.batch_decode(translated_output, skip_special_tokens=True)
     
-    return decoded_output
-translate_to_kan(text_to_translate)
+#     return decoded_output
+# translate_to_kan(text_to_translate)
 
 
+#NLLB-200
+
+
+#HELSINKI
+#https://api-inference.huggingface.co/models/Helsinki-NLP/opus-mt-en-dra
