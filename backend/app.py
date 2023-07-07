@@ -2,7 +2,7 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS, cross_origin
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-#from eng_kan_translate import translate_to_kan
+from eng_kan_translate import translate_to_kan
 from dialogpt_chat import get_chat_response
 from text_summariser import summarise_text
 import dill
@@ -11,6 +11,9 @@ import json
 import requests
 import math
 from datetime import datetime
+from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
+from sentiment_analyser import get_sentiment
+
 app = Flask(__name__)
 CORS(app)
 
@@ -55,10 +58,11 @@ def response(text):
     past_user_inputs.append(text)
 
     #SENTIMENT ANALYSIS
-    pred = loaded_model(sent_params[0], sent_params[1], sent_params[2], sent_params[3], sent_params[4], [text])
+    pred =get_sentiment(text)
+    #pred = loaded_model(sent_params[0], sent_params[1], sent_params[2], sent_params[3], sent_params[4], [text])
     print(pred, pos, neg)
 
-    if pred[0] == 1:
+    if pred == 1:
         pos += 1
     else:
         neg += 1
@@ -73,13 +77,13 @@ def response(text):
     generated_responses.append(bot_resp)
 
     if pos < neg:
-        #response = jsonify(message=[translate_to_kan(bot_resp)], tone = detect_sentiment("sad"))
-        response = jsonify(message=[bot_resp], tone = detect_sentiment("sad"))
+        response = jsonify(message=[translate_to_kan(bot_resp)], tone = detect_sentiment("sad"))
+        #response = jsonify(message=[bot_resp], tone = detect_sentiment("sad"))
         pos = 5
         neg = 0
     else:
-        #response = jsonify(message=[translate_to_kan(bot_resp)], tone = detect_sentiment("neutral"))
-        response = jsonify(message=[bot_resp], tone = detect_sentiment("neutral"))
+        response = jsonify(message=[translate_to_kan(bot_resp)], tone = detect_sentiment("neutral"))
+        #response = jsonify(message=[bot_resp], tone = detect_sentiment("neutral"))
 
     response.headers.add("Access-Control-Allow-Origin", "*")
 
@@ -170,5 +174,8 @@ if __name__ == "__main__":
     w_tokenizer = WhitespaceTokenizer()
     sent_params = dill.load(open('./models/sent_params.pkl', 'rb'))
     loaded_model = dill.load(open('./models/sentiment_model.pkl', 'rb'))
+    # print(sent_params)
+    # print(loaded_model)
+    # print(loaded_model(sent_params[0], sent_params[1], sent_params[2], sent_params[3], sent_params[4], ['i am sad']))
 
     app.run(debug=True)
